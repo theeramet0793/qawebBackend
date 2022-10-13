@@ -1,5 +1,6 @@
 
 #server side
+from crypt import methods
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
@@ -20,7 +21,9 @@ class Test(Resource):
     
 # API GET
 api.add_resource(Test,"/Test")
-api.add_resource(Test,"/")
+app.route("/", methods=["GET", "POST"])
+def home():
+    return "Hello"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
