@@ -4,7 +4,6 @@ from datetime import timedelta
 from datetime import datetime
 import json
 import pymysql
-import jwt
 
 secretKey = "questionandanswerwebsiteforfindingmovie";
 
@@ -23,13 +22,5 @@ class SignIn(Resource):
         if( len(user) != 1 ):
             return 'failed';
         else:
-            return generate_token(user[0][0],user[0][1],user[0][2])
+            return 'success'
 
-def generate_token(uid,uname,urole):
-    token = jwt.encode({
-        'UID':uid,
-        'UName':uname,
-        'URole':urole,
-        'expiration':str(datetime.utcnow()+timedelta(minutes=60))
-        },secretKey)
-    return jsonify({'UID': uid,'UName': uname,'URole':urole,'token': token})
