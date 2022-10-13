@@ -1,29 +1,34 @@
 
-#server side
-from crypt import methods
-from flask import Flask
-from flask_restful import Api
-from flask_cors import CORS
-from flask_restful import Resource
+from flask import Flask, jsonify
 
-
-#===================================================================
-#design resource
 app = Flask(__name__)
-api = Api(app)
-CORS(app)
-secretKey = "questionandanswerwebsiteforfindingmovie";
+
+data = [
+        {
+            "id": 1,
+            "library": "Pandas",
+            "language": "Python"
+        },
+        {
+            "id": 2,
+            "library": "requests",
+            "language": "Python"
+        },
+        {
+            "id": 3,
+            "library": "NumPy",
+            "language": "Python"
+        }
+    ]
+
+@app.route('/')
+def hello():
+    return "Hello Flask-Heroku"
 
 
-class Test(Resource):
-    def get(self):
-        return "OK"
-    
-# API GET
-api.add_resource(Test,"/Test")
-app.route("/", methods=["GET", "POST"])
-def home():
-    return "Hello"
+@app.route('/api', methods=['GET'])
+def get_api():
+    return jsonify(data)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=False)
