@@ -9,13 +9,13 @@ class SignUp(Resource):
         print(data)
         defaultRole = '1'; # RoleId 1 = normal User
         defaultIsActive = '1'; #True
-        connection = pymysql.connect(host='localhost', user='root', password='root',db='qadb')
+        connection = pymysql.connect(host='sql6.freesqldatabase.com', user='sql6580445', password='nDWsWTCL6D',db='sql6580445')
         mycursor = connection.cursor()
-        affectedRow = mycursor.execute("INSERT INTO TblUser( UserName, Email, Password, Role, ImageURL, CreatedAt, IsActive) VALUES ( %s, %s, %s, %s, %s, %s, %s); ",(data['userName'], data['email'], data['password'], defaultRole, data['imageURL'], data['createdAt'], defaultIsActive))
+        affectedRow = mycursor.execute("INSERT INTO Users( UserName, Email, Password ) VALUES ( %s, %s, %s); ",(data['userName'], data['email'], data['password'] ))
         connection.commit()
         connection.close()
         print(affectedRow)
         if(affectedRow == 1):  
-            return 'Recieved'
+            return 'UserCreated'
         else:
             return 'Failed'
