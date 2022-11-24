@@ -47,7 +47,7 @@ api.add_resource(DeletePost,"/DeletePost")
 api.add_resource(DeleteComment,"/DeleteComment")
 api.add_resource(UpdatePost,"/UpdatePost")
 api.add_resource(FoundMovieName,"/FoundMovieName")
-api.add_resource(SignUp,"/SignUp")
+api.add_resource(SignUp,"/signup")
 api.add_resource(SignIn,"/signin")
 
 if __name__ == "__main__":

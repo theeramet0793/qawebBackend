@@ -5,10 +5,9 @@ import pymysql
 
 class SignUp(Resource):
     def post(self):
+        print(request.data)
         data = json.loads(request.data)
         print(data)
-        defaultRole = '1'; # RoleId 1 = normal User
-        defaultIsActive = '1'; #True
         connection = pymysql.connect(host='sql6.freesqldatabase.com', user='sql6580445', password='nDWsWTCL6D',db='sql6580445')
         mycursor = connection.cursor()
         affectedRow = mycursor.execute("INSERT INTO Users( UserName, Email, Password ) VALUES ( %s, %s, %s); ",(data['userName'], data['email'], data['password'] ))
