@@ -11,9 +11,9 @@ class SignIn(Resource):
     def post(self):
         data = json.loads(request.data)
         print(data)
-        connection = pymysql.connect(host='localhost', user='root', password='root',db='qadb')
+        connection = pymysql.connect(host='sql6.freesqldatabase.com', user='sql6580445', password='nDWsWTCL6D',db='sql6580445')
         mycursor = connection.cursor()
-        mycursor.execute("SELECT UserId, UserName, Role, RoleName FROM TblUser JOIN TblUserrole ON TblUser.Role = TblUserrole.RoleId WHERE Email = %s AND Password = %s",(data['email'], data['password']))
+        mycursor.execute("SELECT UserId, UserName FROM Users WHERE Email = %s AND Password = %s",(data['email'], data['password']))
         user = mycursor.fetchall()
         #print(userUID[0])
         connection.commit()
