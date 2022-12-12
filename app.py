@@ -32,7 +32,7 @@ secretKey = "questionandanswerwebsiteforfindingmovie";
 
 
 # API GET
-api.add_resource(GetAllPost,"/GetAllPost")
+api.add_resource(GetAllPost,"/posts")
 api.add_resource(GetAllSolvedPost,"/GetAllPostSolve")
 api.add_resource(GetAllUnsolvedPost,"/GetAllPostUnsolve")
 api.add_resource(GetAllComment,"/GetAllComment")
@@ -41,9 +41,9 @@ api.add_resource(GetSomePost,"/GetSomePost/<int:postID>")
 api.add_resource(GetMovieName,"/GetMovieName/<int:postID>")
 
 # API POST
-api.add_resource(AddPostByUser,"/PostByUser")
+api.add_resource(AddPostByUser,"/post")
 api.add_resource(AddCommentByUser,"/CommentByUser")
-api.add_resource(DeletePost,"/DeletePost")
+api.add_resource(DeletePost,"/deletepost")
 api.add_resource(DeleteComment,"/DeleteComment")
 api.add_resource(UpdatePost,"/UpdatePost")
 api.add_resource(FoundMovieName,"/FoundMovieName")
@@ -51,4 +51,5 @@ api.add_resource(SignUp,"/signup")
 api.add_resource(SignIn,"/signin")
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
+    #Change debug to flase when deploy
