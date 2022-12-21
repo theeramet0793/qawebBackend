@@ -13,7 +13,7 @@ class GetAllPost(Resource):
         mycursor.execute("SELECT Posts.postId \
             FROM Posts  \
             WHERE isDeleted = 0 \
-            ORDER BY Posts.lastUpdateDate DESC, Posts.lastUpdateTime DESC")
+            ORDER BY Posts.lastUpdateDate DESC, Posts.lastUpdateTime DESC, Posts.postId DESC")
         user = mycursor.fetchall()
         connection.commit()
         connection.close()  

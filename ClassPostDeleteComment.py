@@ -2,16 +2,17 @@ from flask import  request
 from flask_restful import Resource
 import json
 import pymysql
-
+from Const import connectionHost, connectionUser, connectionPassword, connectionDatabase
 
 class DeleteComment(Resource):
-    def post(self):
+    def patch(self):
+        true = '1'
         data = json.loads(request.data)
         print(data)
-        true = '1'
-        connection = pymysql.connect(host='localhost', user='root', password='root',db='qadb')
+        connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("UPDATE TblComment SET IsDeleted = %s, DeletedAt = %s WHERE CommentId = %s; ",(true, data['deletedAt'], data['commentId']))
+        mycursor.execute("UPDATE comments SET isDeleted = %s, deletedDate = %s, deletedTime = %s, deletedBy = %s WHERE commentId = %s; "
+                         ,(true, data['date'], data['time'], data['deletedBy'], data['commentId']))
         connection.commit()
         connection.close()  
-        return 'Recieved'
+        return 'Deleted Successful'

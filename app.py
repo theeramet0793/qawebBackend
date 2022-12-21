@@ -13,10 +13,12 @@ from ClassGetMovieName import GetMovieName
 from ClassGetComment import GetComment
 from ClassGetSomePost import GetSomePost
 from ClassGetProfileImage import GetProfileImage
+from ClassGetCommentById import GetCommentById
+from ClassGetCommentByPostId import GetCommentByPostId
 
 # Class method POST
 from ClassPostAddPostByUser import AddPostByUser
-from ClassPostAddCommentByUser import AddCommentByUser
+from ClassPostComment import AddCommentByUser
 from ClassPostDeletePost import DeletePost
 from ClassPostDeleteComment import DeleteComment
 from ClassPostUpdatePost import UpdatePost
@@ -24,6 +26,7 @@ from ClassPostFoundMovieName import FoundMovieName
 from ClassPostSignUp import SignUp
 from ClassPostSignIn import SignIn
 from ClassPostUpdateProfileImg import UpdateProfileImage
+from ClassPostUpdateComment import UpdateComment
 
 #===================================================================
 #design resource
@@ -42,17 +45,20 @@ api.add_resource(GetComment,"/GetComment/<int:postId>")
 api.add_resource(GetSomePost,"/post/<int:postId>")
 api.add_resource(GetMovieName,"/GetMovieName/<int:postID>")
 api.add_resource(GetProfileImage,"/profileUrl/<int:userId>")
+api.add_resource(GetCommentById,"/commentbyid/<int:commentId>")
+api.add_resource(GetCommentByPostId,"/commentbypostid/<int:postId>")
 
 # API POST
 api.add_resource(AddPostByUser,"/post")
-api.add_resource(AddCommentByUser,"/CommentByUser")
 api.add_resource(DeletePost,"/deletepost")
-api.add_resource(DeleteComment,"/DeleteComment")
+api.add_resource(DeleteComment,"/delete/comment")
 api.add_resource(UpdatePost,"/updatepost")
+api.add_resource(UpdateComment,"/update/comment")
 api.add_resource(FoundMovieName,"/FoundMovieName")
 api.add_resource(SignUp,"/signup")
 api.add_resource(SignIn,"/signin")
 api.add_resource(UpdateProfileImage,"/profileUrl")
+api.add_resource(AddCommentByUser,"/comment")
 
 if __name__ == "__main__":
     app.run(debug=True)
