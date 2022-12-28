@@ -15,6 +15,8 @@ from ClassGetSomePost import GetSomePost
 from ClassGetProfileImage import GetProfileImage
 from ClassGetCommentById import GetCommentById
 from ClassGetCommentByPostId import GetCommentByPostId
+from ClassGetCountComment import GetCountComment
+from ClassGetSearchTag import GetSearchTag
 
 # Class method POST
 from ClassPostAddPostByUser import AddPostByUser
@@ -47,6 +49,8 @@ api.add_resource(GetMovieName,"/GetMovieName/<int:postID>")
 api.add_resource(GetProfileImage,"/profileUrl/<int:userId>")
 api.add_resource(GetCommentById,"/commentbyid/<int:commentId>")
 api.add_resource(GetCommentByPostId,"/commentbypostid/<int:postId>")
+api.add_resource(GetCountComment,"/countcomment/<int:postId>")
+api.add_resource(GetSearchTag,"/searchtags/<string:searchStr>")
 
 # API POST
 api.add_resource(AddPostByUser,"/post")

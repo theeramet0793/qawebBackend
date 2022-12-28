@@ -16,6 +16,12 @@ class AddPostByUser(Resource):
         mycursor.execute("SELECT LAST_INSERT_ID();")
         last_insert_id = mycursor.fetchone()
         connection.commit()
+        
+        tagIdList = data['tagList']
+        for tagId in tagIdList:
+            mycursor.execute("INSERT INTO poststags(postId, tagId) \
+            VALUES (%s, %s); ",(last_insert_id, tagId))
+            connection.commit()
         connection.close()  
         
         d = collections.OrderedDict()
