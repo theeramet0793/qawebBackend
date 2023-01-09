@@ -11,7 +11,8 @@ class GetSomePost(Resource):
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
         
-        mycursor.execute("SELECT posts.postId, posts.userId, posts.postDetail, posts.createdDate, posts.createdTime, posts.lastUpdateDate, posts.lastUpdateTime, users.Username\
+        mycursor.execute("SELECT posts.postId, posts.userId, posts.postDetail, posts.createdDate,\
+            posts.createdTime, posts.lastUpdateDate, posts.lastUpdateTime, posts.movieId, users.Username\
             FROM posts LEFT JOIN users ON posts.userId = users.userId \
             WHERE posts.isDeleted = 0 AND posts.postId = %s",(postId))
         post = mycursor.fetchall()
@@ -41,7 +42,8 @@ class GetSomePost(Resource):
             d['createdTime'] = row[4]
             d['lastUpdateDate'] = row[5]
             d['lastUpdateTime'] = row[6]
-            d['username'] = row[7]
+            d['movieId'] = row[7]
+            d['username'] = row[8]
             d['tagList'] = tag_list
             object_list.append(d)
         l = json.dumps(object_list[0])

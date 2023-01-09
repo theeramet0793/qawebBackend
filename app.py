@@ -9,7 +9,7 @@ from ClassGetAllComment import GetAllComment
 from ClassGetAllPost import GetAllPost
 from ClassGetAllSolvedPost import GetAllSolvedPost
 from ClassGetAllUnsolvePost import GetAllUnsolvedPost
-from ClassGetMovieName import GetMovieName
+from ClassGetMovieByPostId import GetMovieByPostId
 from ClassGetComment import GetComment
 from ClassGetSomePost import GetSomePost
 from ClassGetProfileImage import GetProfileImage
@@ -19,6 +19,7 @@ from ClassGetCountComment import GetCountComment
 from ClassGetCountUpvote import GetCountUpvote
 from ClassGetCountFollow import GetCountFollow
 from ClassGetSearchTag import GetSearchTag
+from ClassGetSearchMovie import GetSearchMovie
 from ClassGetUpvote import GetUpvote
 from ClassGetFollow import GetFollow
 
@@ -35,6 +36,7 @@ from ClassPostUpdateProfileImg import UpdateProfileImage
 from ClassPostUpdateComment import UpdateComment
 from ClassPostUpdateUpvote import UpdateUpvote
 from ClassPostUpdateFollow import UpdateFollow
+from ClassPostUpdateMovie import UpdateMovie
 
 #===================================================================
 #design resource
@@ -45,13 +47,13 @@ secretKey = "questionandanswerwebsiteforfindingmovie";
 
 
 # API GET
-api.add_resource(GetAllPost,"/posts")
+api.add_resource(GetAllPost,"/posts/") #support {params:{ a:1, b:2}}
 api.add_resource(GetAllSolvedPost,"/GetAllPostSolve")
 api.add_resource(GetAllUnsolvedPost,"/GetAllPostUnsolve")
 api.add_resource(GetAllComment,"/GetAllComment")
 api.add_resource(GetComment,"/GetComment/<int:postId>")
 api.add_resource(GetSomePost,"/post/<int:postId>")
-api.add_resource(GetMovieName,"/GetMovieName/<int:postID>")
+api.add_resource(GetMovieByPostId,"/getmovie/<int:postId>")
 api.add_resource(GetProfileImage,"/profileUrl/<int:userId>")
 api.add_resource(GetCommentById,"/commentbyid/<int:commentId>")
 api.add_resource(GetCommentByPostId,"/commentbypostid/<int:postId>")
@@ -59,10 +61,11 @@ api.add_resource(GetCountComment,"/countcomment/<int:postId>")
 api.add_resource(GetCountUpvote,"/countupvote/<int:postId>")
 api.add_resource(GetCountFollow,"/countfollow/<int:postId>")
 api.add_resource(GetSearchTag,"/searchtags/<string:searchStr>")
-api.add_resource(GetUpvote,"/getUpvote/<int:postId>/<int:userId>")
+api.add_resource(GetSearchMovie,"/searchmovies/<string:searchStr>")
+api.add_resource(GetUpvote,"/getUpvote/")
 api.add_resource(GetFollow,"/getfollow/<int:postId>/<int:userId>")
 
-# API POST
+# API POST/PATCH
 api.add_resource(AddPostByUser,"/post")
 api.add_resource(DeletePost,"/deletepost")
 api.add_resource(DeleteComment,"/delete/comment")
@@ -75,6 +78,7 @@ api.add_resource(UpdateProfileImage,"/profileUrl")
 api.add_resource(AddCommentByUser,"/comment")
 api.add_resource(UpdateUpvote,"/upvote")
 api.add_resource(UpdateFollow,"/follow")
+api.add_resource(UpdateMovie,"/updatemovie")
 
 if __name__ == "__main__":
     app.run(debug=True)
