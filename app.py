@@ -22,6 +22,7 @@ from ClassGetSearchTag import GetSearchTag
 from ClassGetSearchMovie import GetSearchMovie
 from ClassGetUpvote import GetUpvote
 from ClassGetFollow import GetFollow
+from ClassGetMainSearch import GetMainSearch
 
 # Class method POST
 from ClassPostAddPostByUser import AddPostByUser
@@ -64,6 +65,7 @@ api.add_resource(GetSearchTag,"/searchtags/<string:searchStr>")
 api.add_resource(GetSearchMovie,"/searchmovies/<string:searchStr>")
 api.add_resource(GetUpvote,"/getUpvote/")
 api.add_resource(GetFollow,"/getfollow/<int:postId>/<int:userId>")
+api.add_resource(GetMainSearch,"/mainsearch")
 
 # API POST/PATCH
 api.add_resource(AddPostByUser,"/post")
