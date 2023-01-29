@@ -23,6 +23,7 @@ from ClassGetSearchMovie import GetSearchMovie
 from ClassGetUpvote import GetUpvote
 from ClassGetFollow import GetFollow
 from ClassGetMainSearch import GetMainSearch
+from ClassGetAllSearchPost import GetAllSearchPost
 
 # Class method POST
 from ClassPostAddPostByUser import AddPostByUser
@@ -66,6 +67,7 @@ api.add_resource(GetSearchMovie,"/searchmovies/<string:searchStr>")
 api.add_resource(GetUpvote,"/getUpvote/")
 api.add_resource(GetFollow,"/getfollow/<int:postId>/<int:userId>")
 api.add_resource(GetMainSearch,"/mainsearch")
+api.add_resource(GetAllSearchPost,"/searchposts") #support {params:{ a:1, b:2}}
 
 # API POST/PATCH
 api.add_resource(AddPostByUser,"/post")
