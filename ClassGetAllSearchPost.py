@@ -11,16 +11,33 @@ class GetAllSearchPost(Resource):
     def get(self):
         a = request.args
         args = a.to_dict()
+        connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
+        mycursor = connection.cursor()
         
         searchWord = args.get("searchWord")
         searchType = args.get("searchType")
-        searchId = args.get("searchId")
+        tag_id = None
+        user_id = None
         
         if(searchWord == None or searchWord == ''):
-          return Response("searchWord not found", status=404, mimetype='application/json')
+          return Response("searchWord is required", status=404, mimetype='application/json')
         if(searchType == None or searchType == ''):
-          return Response("searchType not found", status=404, mimetype='application/json')
-        
+          return Response("searchType is required", status=404, mimetype='application/json')
+        else:
+          if(searchType=="TAG"):
+            mycursor.execute("SELECT tags.tagId FROM tags WHERE tags.tagName = %s",(searchWord))
+            tag= mycursor.fetchone()
+            connection.commit()
+            if(tag!=None):
+              tag_id = str(tag[0])
+
+          elif(searchType =="USER"):
+            mycursor.execute("SELECT users.userId FROM users WHERE users.username = %s",(searchWord))
+            user = mycursor.fetchone()
+            connection.commit()
+            if(user!=None):
+              user_id = str(user[0])
+            
         sortby = args.get("sortby")
         postType = args.get("type")
         followBy = args.get("followby")
@@ -31,12 +48,10 @@ class GetAllSearchPost(Resource):
         sql_where = whereType(postType)
         sql_create_only_follow_cte = create_only_follow_cte(followBy)
         sql_filter_only_follow_post = right_join_for_only_follow_post(followBy)
-        sql_create_search_by_tag_cte = create_sql_for_poststags_cte(searchType,searchId)
-        sql_filter_search_by_tag_cte = right_join_for_search_by_tag(searchType,searchId)
-        sql_where_clause_for_search_by_userId = where_for_search_by_userID(searchType,searchId)
+        sql_create_search_by_tag_cte = create_sql_for_poststags_cte(searchType,tag_id)
+        sql_filter_search_by_tag_cte = right_join_for_search_by_tag(searchType,tag_id)
+        sql_where_clause_for_search_by_userId = where_for_search_by_userID(searchType,user_id)
           
-        connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
-        mycursor = connection.cursor()
         if(searchType=="USER" or searchType=="TAG"):
           mycursor.execute("WITH cte_upvote(post_Id, upvote_count) AS (           \
                                     SELECT upvote.postId, COUNT(upvote.userId)    \
@@ -122,21 +137,30 @@ def right_join_for_only_follow_post(userId):
 
 def create_sql_for_poststags_cte(searchType,tagId):
   if(searchType=="TAG"):
-    return(", cte_tag(post_Id) AS ( \
-      SELECT poststags.postId \
-      FROM poststags \
-      WHERE poststags.tagId = "+tagId+" )" )
+    if(tagId != None and tagId != ''):
+      return(", cte_tag(post_Id) AS ( \
+        SELECT poststags.postId \
+        FROM poststags \
+        WHERE poststags.tagId = "+tagId+" )" )
+    else:
+      return(", cte_tag(post_Id) AS ( \
+        SELECT poststags.postId \
+        FROM poststags \
+        WHERE poststags.tagId = -1 )" )
   else:
     return('')
 
 def right_join_for_search_by_tag(searchType,tagId):
-    if(tagId != None and tagId != '' and searchType=="TAG"):
+    if( searchType=="TAG"):
       return("RIGHT JOIN cte_tag ON posts.postId = cte_tag.post_Id")
     else:
       return('')
 
 def where_for_search_by_userID(searchType,userId):
-    if(userId != None and userId != '' and searchType=="USER"):
-      return("AND posts.userId = "+userId)
+    if(searchType=="USER"):
+      if(userId != None and userId != ''):
+        return("AND posts.userId = "+userId)
+      else:
+        return("AND posts.userId = -1")
     else:
       return('')
