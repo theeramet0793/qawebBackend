@@ -21,7 +21,8 @@ class UpdateMovie(Resource):
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword, db=connectionDatabase)
         mycursor = connection.cursor()
         if(len(movieName) <= 0):
-          mycursor.execute("UPDATE posts SET posts.movieId = NULL WHERE posts.postId = %s",(postId))
+          mycursor.execute("UPDATE posts SET posts.movieId = NULL, posts.isReccommend = 0, posts.lastUpdateDate = %s, posts.lastUpdateTime = %s\
+            WHERE posts.postId = %s",(date, time, postId))
           connection.commit()
         elif(len(movieId) <=0 ):
           return Response("movieId is required", status=404, mimetype='application/json')
@@ -32,11 +33,39 @@ class UpdateMovie(Resource):
             if(movienamefromDB == None):
               #In case of dont have this movie in DB => Insert new movie 
               mycursor.execute("INSERT INTO movies(movieId, movieName, createdDate, createdTime, createdBy) VALUES(%s, %s, %s, %s, %s)",(movieId, movieName, date, time, userId))
-              mycursor.execute("SELECT LAST_INSERT_ID();")
               connection.commit()
               
-        mycursor.execute("UPDATE posts SET posts.movieId = %s WHERE posts.postId = %s",(movieId, postId))
+        mycursor.execute("SELECT posts.movieId FROM posts WHERE posts.postId = %s",(postId))
+        o = mycursor.fetchone()
         connection.commit()
+        oldMovieId = None
+        print("==>",o)
+        if(o):
+          oldMovieId = o[0]
+        notiType = calNotiType(movieId,oldMovieId)
+        
+        mycursor.execute("UPDATE posts SET posts.movieId = %s, posts.isReccommend = 1, posts.lastUpdateDate = %s, posts.lastUpdateTime = %s\
+          WHERE posts.postId = %s",(movieId, date, time, postId))
+        connection.commit()     
+                
+        mycursor.execute("SELECT follow.userId FROM follow WHERE follow.isFollow = 1 AND follow.postId = %s ",(postId))
+        follows = mycursor.fetchall()
+        connection.commit()
+        if(follows!=None):
+          for follow in follows:
+            followerId = follow[0]
+            mycursor.execute("INSERT \
+              INTO notification(postId, receiverId, isRead, notiType, createdDate, createdTime) \
+              VALUES(%s,%s,%s,%s,%s,%s) ",(postId,followerId,0,notiType,date,time))
+            connection.commit()
           
         connection.close() 
         return 'Updated successful'
+      
+def calNotiType(newMovieId, oldMovieId):
+  if(newMovieId==None or newMovieId==''):
+    return "Remove"
+  elif((oldMovieId == None or oldMovieId == 0) and newMovieId!=None):
+    return "Add"
+  elif((oldMovieId!=None or oldMovieId!=0) and newMovieId!=None and oldMovieId!=newMovieId):
+    return "Edit"

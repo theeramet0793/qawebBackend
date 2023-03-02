@@ -24,6 +24,9 @@ from ClassGetUpvote import GetUpvote
 from ClassGetFollow import GetFollow
 from ClassGetMainSearch import GetMainSearch
 from ClassGetAllSearchPost import GetAllSearchPost
+from ClassGetNoti import GetNotification
+from ClassMLGetPost import GetPostByMLSystem
+from ClassGetRecMovieList import GetReccommendMovieForFrontend
 
 # Class method POST
 from ClassPostAddPostByUser import AddPostByUser
@@ -39,6 +42,9 @@ from ClassPostUpdateComment import UpdateComment
 from ClassPostUpdateUpvote import UpdateUpvote
 from ClassPostUpdateFollow import UpdateFollow
 from ClassPostUpdateMovie import UpdateMovie
+from ClassPostUpdateNoti import UpdateNotification
+from ClassMLPostReccommendMovie import UpdateReccommendMovie
+from ClassPostRejectAllRecMovie import RejectReccommendMovie
 
 #===================================================================
 #design resource
@@ -68,6 +74,10 @@ api.add_resource(GetUpvote,"/getUpvote/")
 api.add_resource(GetFollow,"/getfollow/<int:postId>/<int:userId>")
 api.add_resource(GetMainSearch,"/mainsearch")
 api.add_resource(GetAllSearchPost,"/searchposts") #support {params:{ a:1, b:2}}
+api.add_resource(GetNotification,"/getnoti")#support {params:{ a:1, b:2}}
+api.add_resource(GetPostByMLSystem,"/getonepostformlsystem")
+api.add_resource(UpdateReccommendMovie,"/reccommendmovie") #support json
+api.add_resource(GetReccommendMovieForFrontend,"/getrecmovielist") #support {params:{ a:1, b:2}}
 
 # API POST/PATCH
 api.add_resource(AddPostByUser,"/post")
@@ -83,7 +93,9 @@ api.add_resource(AddCommentByUser,"/comment")
 api.add_resource(UpdateUpvote,"/upvote")
 api.add_resource(UpdateFollow,"/follow")
 api.add_resource(UpdateMovie,"/updatemovie")
+api.add_resource(UpdateNotification,"/marknotiasread")#support {params:{ a:1, b:2}}
+api.add_resource(RejectReccommendMovie,"/rejectallreccommendmovie")#support {params:{ a:1, b:2}}
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
     #Change debug to flase when deploy

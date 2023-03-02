@@ -9,7 +9,7 @@ class GetSearchMovie(Resource):
     def get(self,searchStr): 
 
         str = '%'+searchStr+'%' 
-        data = requests.get('https://api.themoviedb.org/3/search/movie?api_key='+api_key_for_TMDB+'&language=th-TH&query='+str+'&page=1').content 
+        data = requests.get('https://api.themoviedb.org/3/search/movie?api_key='+api_key_for_TMDB+'&language=en-EN&query='+str+'&page=1').content 
         return json.loads(data)  
         # object_list = []
         # for row in tags:

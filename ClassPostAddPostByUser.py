@@ -27,7 +27,6 @@ class AddPostByUser(Resource):
         d = collections.OrderedDict()
         if( len(last_insert_id) > 0):
             d['postId'] = last_insert_id[0]
-
-
+        
         l = json.dumps(d)
         return json.loads(l)
