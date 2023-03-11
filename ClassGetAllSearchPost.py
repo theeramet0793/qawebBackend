@@ -106,19 +106,19 @@ class GetAllSearchPost(Resource):
 
 def orderBy(sortby):
   if(sortby == 'date'):
-    return "ORDER BY lastUpdateDate DESC, lastUpdateTime DESC"
+    return " ORDER BY lastUpdateDate DESC, lastUpdateTime DESC"
   if(sortby == 'upvote'):
-    return "ORDER BY upvotes DESC"
+    return " ORDER BY upvotes DESC"
   if(sortby == 'follow'):
-    return "ORDER BY follow DESC"
+    return " ORDER BY follow DESC"
 
 def whereType(type):
   if(type == 'all'):
     return ''
   if(type == 'solved'):
-    return "AND movieId IS NOT NULL "
+    return " AND movieId IS NOT NULL "
   if(type == 'unsolved'):
-    return "AND movieID IS NULL "
+    return " AND movieID IS NULL "
   
 def create_only_follow_cte(userId):
   if(userId != None and userId != ''):
@@ -131,7 +131,7 @@ def create_only_follow_cte(userId):
   
 def right_join_for_only_follow_post(userId):
     if(userId != None and userId != ''):
-      return("RIGHT JOIN cte_onlyfollow ON posts.postId = cte_onlyfollow.post_Id")
+      return(" RIGHT JOIN cte_onlyfollow ON posts.postId = cte_onlyfollow.post_Id")
     else:
       return('')
 
@@ -152,15 +152,15 @@ def create_sql_for_poststags_cte(searchType,tagId):
 
 def right_join_for_search_by_tag(searchType,tagId):
     if( searchType=="TAG"):
-      return("RIGHT JOIN cte_tag ON posts.postId = cte_tag.post_Id")
+      return(" RIGHT JOIN cte_tag ON posts.postId = cte_tag.post_Id")
     else:
       return('')
 
 def where_for_search_by_userID(searchType,userId):
     if(searchType=="USER"):
       if(userId != None and userId != ''):
-        return("AND posts.userId = "+userId)
+        return(" AND posts.userId = "+userId)
       else:
-        return("AND posts.userId = -1")
+        return(" AND posts.userId = -1")
     else:
       return('')

@@ -11,12 +11,16 @@ class UpdateMovie(Resource):
         postId = data['postId']
         movieId = data['movieId']
         movieName = data['movieName']
+        moviePoster = data['posterPath']
         userId = data['userId']
         date = data['date']
         time = data['time']
         
         if(postId == None):
           return Response("postId is required", status=404, mimetype='application/json')
+        
+        if(moviePoster == None):
+          moviePoster = '';
         
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword, db=connectionDatabase)
         mycursor = connection.cursor()
@@ -32,7 +36,7 @@ class UpdateMovie(Resource):
             connection.commit()
             if(movienamefromDB == None):
               #In case of dont have this movie in DB => Insert new movie 
-              mycursor.execute("INSERT INTO movies(movieId, movieName, createdDate, createdTime, createdBy) VALUES(%s, %s, %s, %s, %s)",(movieId, movieName, date, time, userId))
+              mycursor.execute("INSERT INTO movies(movieId, movieName, moviePoster, createdDate, createdTime, createdBy) VALUES(%s, %s, %s, %s, %s, %s)",(movieId, movieName, moviePoster, date, time, userId))
               connection.commit()
               
         mycursor.execute("SELECT posts.movieId FROM posts WHERE posts.postId = %s",(postId))

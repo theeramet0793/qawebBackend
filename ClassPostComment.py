@@ -14,13 +14,13 @@ class AddCommentByUser(Resource):
         mycursor.execute("INSERT INTO comments(postId, userId, commentDetail, createdDate, createdTime, lastUpdateDate, lastUpdateTime) \
             VALUES (%s, %s, %s, %s, %s, %s, %s); ",(data['postId'], data['userId'], data['commentDetail'], data['date'], data['time'], data['date'], data['time']))
         mycursor.execute("SELECT LAST_INSERT_ID();")
-        last_insert_id = mycursor.fetchone()
+        last_insert_row = mycursor.fetchone()
         connection.commit()
         connection.close()  
         
         d = collections.OrderedDict()
-        if( len(last_insert_id) > 0):
-            d['commentId'] = last_insert_id[0]
+        if( len(last_insert_row) > 0):
+            d['commentId'] = last_insert_row[0]
 
 
         l = json.dumps(d)
