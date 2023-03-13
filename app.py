@@ -5,6 +5,7 @@ from flask_restful import Api
 from flask_cors import CORS
 
 # Class method GET
+from ClassTest import Test
 from ClassGetAllComment import GetAllComment
 from ClassGetAllPost import GetAllPost
 from ClassGetAllSolvedPost import GetAllSolvedPost
@@ -57,6 +58,7 @@ secretKey = "questionandanswerwebsiteforfindingmovie";
 
 
 # API GET
+api.add_resource(Test,"/test")
 api.add_resource(GetAllPost,"/posts/") #support {params:{ a:1, b:2}}
 api.add_resource(GetAllSolvedPost,"/GetAllPostSolve")
 api.add_resource(GetAllUnsolvedPost,"/GetAllPostUnsolve")
