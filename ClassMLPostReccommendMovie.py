@@ -29,3 +29,5 @@ class UpdateReccommendMovie(Resource):
         connection.commit()
         connection.close()
         
+        return 'ok'
+        

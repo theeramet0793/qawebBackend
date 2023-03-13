@@ -2,8 +2,10 @@ from flask import  request, Response
 from flask_restful import Resource
 import json
 import pymysql
-from Const import connectionHost, connectionUser, connectionPassword, connectionDatabase
+from Const import connectionHost, connectionUser, connectionPassword, connectionDatabase, api_url_for_add_movie_to_ML
 import collections
+import requests
+from FuncUpdatePostDataToML import updateDataToML 
 
 class UpdateMovie(Resource):
     def patch(self):
@@ -25,6 +27,7 @@ class UpdateMovie(Resource):
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword, db=connectionDatabase)
         mycursor = connection.cursor()
         if(len(movieName) <= 0):
+          # In case of delete movie from post
           mycursor.execute("UPDATE posts SET posts.movieId = NULL, posts.isReccommend = 0, posts.lastUpdateDate = %s, posts.lastUpdateTime = %s\
             WHERE posts.postId = %s",(date, time, postId))
           connection.commit()
@@ -35,10 +38,17 @@ class UpdateMovie(Resource):
             movienamefromDB = mycursor.fetchone()
             connection.commit()
             if(movienamefromDB == None):
-              #In case of dont have this movie in DB => Insert new movie 
+              # In case of dont have this movie in DB => Insert new movie 
               mycursor.execute("INSERT INTO movies(movieId, movieName, moviePoster, createdDate, createdTime, createdBy) VALUES(%s, %s, %s, %s, %s, %s)",(movieId, movieName, moviePoster, date, time, userId))
               connection.commit()
+              # add new movie to ML 
+              body = {
+                "tmdbId":movieId,
+                "movieName":movieName,
+              }
+              requests.post(api_url_for_add_movie_to_ML, json=body)
               
+        # For noti
         mycursor.execute("SELECT posts.movieId FROM posts WHERE posts.postId = %s",(postId))
         o = mycursor.fetchone()
         connection.commit()
@@ -48,10 +58,16 @@ class UpdateMovie(Resource):
           oldMovieId = o[0]
         notiType = calNotiType(movieId,oldMovieId)
         
-        mycursor.execute("UPDATE posts SET posts.movieId = %s, posts.isReccommend = 1, posts.lastUpdateDate = %s, posts.lastUpdateTime = %s\
-          WHERE posts.postId = %s",(movieId, date, time, postId))
-        connection.commit()     
-                
+        # Update post when user select movie name
+        if(len(movieName) > 0):
+          mycursor.execute("UPDATE posts SET posts.movieId = %s, posts.isReccommend = 1, posts.lastUpdateDate = %s, posts.lastUpdateTime = %s\
+            WHERE posts.postId = %s",(movieId, date, time, postId))
+          connection.commit()   
+        
+        # Update post to ML
+        updateDataToML(postId)
+        
+        # Create notification      
         mycursor.execute("SELECT follow.userId FROM follow WHERE follow.isFollow = 1 AND follow.postId = %s ",(postId))
         follows = mycursor.fetchall()
         connection.commit()

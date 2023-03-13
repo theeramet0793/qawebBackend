@@ -45,6 +45,8 @@ from ClassPostUpdateMovie import UpdateMovie
 from ClassPostUpdateNoti import UpdateNotification
 from ClassMLPostReccommendMovie import UpdateReccommendMovie
 from ClassPostRejectAllRecMovie import RejectReccommendMovie
+from ClassPostRefreshFindMovie import RefreshFindingMovie
+from ClassPostChangeUsername import ChangeUsername
 
 #===================================================================
 #design resource
@@ -95,6 +97,8 @@ api.add_resource(UpdateFollow,"/follow")
 api.add_resource(UpdateMovie,"/updatemovie")
 api.add_resource(UpdateNotification,"/marknotiasread")#support {params:{ a:1, b:2}}
 api.add_resource(RejectReccommendMovie,"/rejectallreccommendmovie")#support {params:{ a:1, b:2}}
+api.add_resource(RefreshFindingMovie,"/refreshFindingMovie")
+api.add_resource(ChangeUsername,"/changeusername")
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
