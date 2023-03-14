@@ -23,7 +23,7 @@ class UpdateNotification(Resource):
         #connect to database
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("UPDATE notification\
+        mycursor.execute("UPDATE Notification\
           SET isRead = 1 , readDate = %s, readTime = %s\
           WHERE postId = %s AND receiverId = %s",(date, time, postId,userId))
         connection.commit()

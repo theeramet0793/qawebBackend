@@ -1,10 +1,10 @@
 
 #Connection string
 
-connectionHost = 'localhost'
+connectionHost = '34.126.144.195'
 connectionUser = 'root'
-connectionPassword = ''
-connectionDatabase = 'qadb'
+connectionPassword = 'findovie1234'
+connectionDatabase = 'Findovie-db'
 
 api_key_for_TMDB = '63f048eb9e5d15e25042d9c6d14cd92f'
 api_url_for_ml = 'http://127.0.0.1:5001/'

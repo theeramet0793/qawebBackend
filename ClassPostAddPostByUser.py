@@ -19,7 +19,7 @@ class AddPostByUser(Resource):
         
         tagIdList = data['tagList']
         for tagId in tagIdList:
-            mycursor.execute("INSERT INTO poststags(postId, tagId) \
+            mycursor.execute("INSERT INTO Poststags(postId, tagId) \
             VALUES (%s, %s); ",(last_insert_id, tagId))
             connection.commit()
         connection.close()  

@@ -15,14 +15,14 @@ class RejectReccommendMovie(Resource):
         mycursor = connection.cursor()
         
         mycursor.execute("\
-          UPDATE recmovie\
-          SET recmovie.isReject = 1\
-          WHERE recmovie.postId = %s",(postId))
+          UPDATE Recmovie\
+          SET Recmovie.isReject = 1\
+          WHERE Recmovie.postId = %s",(postId))
         connection.commit()
         
         mycursor.execute("\
-          UPDATE posts\
-          SET posts.isReccommend = 0\
-          WHERE posts.postId = %s",(postId))
+          UPDATE Posts\
+          SET Posts.isReccommend = 0\
+          WHERE Posts.postId = %s",(postId))
         connection.commit()
         connection.close()

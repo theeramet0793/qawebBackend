@@ -13,10 +13,10 @@ class GetPostByMLSystem(Resource):
         mycursor = connection.cursor()
         
         mycursor.execute("\
-            SELECT posts.postId, posts.userId, posts.postDetail, posts.createdDate, posts.createdTime, posts.lastUpdateDate, posts.lastUpdateTime, posts.movieId, users.Username\
-            FROM posts LEFT JOIN users ON posts.userId = users.userId  \
-            WHERE posts.isReccommend = 0\
-            ORDER BY posts.lastUpdateDate ASC, posts.lastUpdateTime ASC\
+            SELECT Posts.postId, Posts.userId, Posts.postDetail, Posts.createdDate, Posts.createdTime, Posts.lastUpdateDate, Posts.lastUpdateTime, Posts.movieId, Users.Username\
+            FROM Posts LEFT JOIN Users ON Posts.userId = Users.userId  \
+            WHERE Posts.isReccommend = 0\
+            ORDER BY Posts.lastUpdateDate ASC, Posts.lastUpdateTime ASC\
             LIMIT 1",())
         post = mycursor.fetchone()
         connection.commit()

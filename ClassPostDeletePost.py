@@ -11,7 +11,7 @@ class DeletePost(Resource):
         print(data)
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("UPDATE Posts SET isDeleted = %s, deletedDate = %s, deletedTime = %s, deletedBy = %s WHERE PostId = %s; ",(true, data['deletedDate'], data['deletedTime'], data['deletedBy'], data['postId']))
+        mycursor.execute("UPDATE Posts SET isDeleted = %s, deletedDate = %s, deletedTime = %s, deletedBy = %s WHERE postId = %s; ",(true, data['deletedDate'], data['deletedTime'], data['deletedBy'], data['postId']))
         connection.commit()
         connection.close()  
         return 'Recieved'

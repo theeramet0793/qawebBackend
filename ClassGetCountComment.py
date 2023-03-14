@@ -9,8 +9,8 @@ class GetCountComment(Resource):
         #connect to database
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("WITH cte_comment(post_id,comment_id) AS (SELECT postId, commentId FROM comments WHERE postId = %s AND isDeleted = 0)\
-          SELECT cte_comment.post_id, COUNT(cte_comment.comment_id) As comments FROM cte_comment",(postId))
+        mycursor.execute("WITH cte_comment(post_id,comment_id) AS (SELECT postId, commentId FROM Comments WHERE postId = %s AND isDeleted = 0)\
+          SELECT cte_comment.post_id, COUNT(cte_comment.comment_id) As Comments FROM cte_comment",(postId))
         post = mycursor.fetchall()
         connection.commit()
         connection.close()

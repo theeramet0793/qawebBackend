@@ -9,10 +9,10 @@ class GetCommentByPostId(Resource):
         #connect to database
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("SELECT comments.commentId \
-            FROM comments  \
-            WHERE isDeleted = 0 AND comments.postId = %s \
-            ORDER BY comments.lastUpdateDate DESC, comments.lastUpdateTime DESC, comments.commentId DESC",(postId))
+        mycursor.execute("SELECT Comments.commentId \
+            FROM Comments  \
+            WHERE isDeleted = 0 AND Comments.postId = %s \
+            ORDER BY Comments.lastUpdateDate DESC, Comments.lastUpdateTime DESC, Comments.commentId DESC",(postId))
         post = mycursor.fetchall()
         connection.commit()
         connection.close()

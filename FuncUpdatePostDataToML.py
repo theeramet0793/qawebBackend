@@ -7,9 +7,9 @@ def updateDataToML(postId):
       connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword, db=connectionDatabase)
       mycursor = connection.cursor()
       mycursor.execute("\
-        SELECT posts.postId, posts.movieId, posts.postDetail\
-        FROM posts\
-        WHERE posts.postId = %s",(postId))
+        SELECT Posts.postId, Posts.movieId, Posts.postDetail\
+        FROM Posts\
+        WHERE Posts.postId = %s",(postId))
       post = mycursor.fetchone()
       connection.commit()
       

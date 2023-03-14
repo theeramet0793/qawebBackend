@@ -10,7 +10,7 @@ class ChangeUsername(Resource):
         
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("SELECT users.username FROM users WHERE users.username = %s ",( data['newUsername']))
+        mycursor.execute("SELECT Users.username FROM Users WHERE Users.username = %s ",( data['newUsername']))
         duplicateName = mycursor.fetchall()
         connection.commit()
         connection.close()  
@@ -20,7 +20,7 @@ class ChangeUsername(Resource):
         
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("UPDATE users SET users.username = %s WHERE users.userId = %s; ",( data['newUsername'], data['userId']))
+        mycursor.execute("UPDATE Users SET Users.username = %s WHERE Users.userId = %s; ",( data['newUsername'], data['userId']))
         connection.commit()
         connection.close()  
         return 'Recieved'

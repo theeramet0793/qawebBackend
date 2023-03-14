@@ -11,7 +11,7 @@ class AddCommentByUser(Resource):
         print(data)
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("INSERT INTO comments(postId, userId, commentDetail, createdDate, createdTime, lastUpdateDate, lastUpdateTime) \
+        mycursor.execute("INSERT INTO Comments(postId, userId, commentDetail, createdDate, createdTime, lastUpdateDate, lastUpdateTime) \
             VALUES (%s, %s, %s, %s, %s, %s, %s); ",(data['postId'], data['userId'], data['commentDetail'], data['date'], data['time'], data['date'], data['time']))
         mycursor.execute("SELECT LAST_INSERT_ID();")
         last_insert_row = mycursor.fetchone()

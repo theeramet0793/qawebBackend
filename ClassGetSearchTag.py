@@ -10,9 +10,9 @@ class GetSearchTag(Resource):
         str = '%'+searchStr+'%' 
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("SELECT tags.tagId, tags.tagName\
-            FROM tags  \
-            WHERE tags.tagName LIKE %s ",str)
+        mycursor.execute("SELECT Tags.tagId, Tags.tagName\
+            FROM Tags  \
+            WHERE Tags.tagName LIKE %s ",str)
         tags = mycursor.fetchall()
         connection.commit()
         connection.close()

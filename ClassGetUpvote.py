@@ -20,7 +20,7 @@ class GetUpvote(Resource):
         #connect to database
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("SELECT upvote.postId, upvote.userId, upvote.isUpvote FROM upvote  WHERE upvote.postId = %s AND upvote.userId = %s ",(postId, userId))
+        mycursor.execute("SELECT Upvote.postId, Upvote.userId, Upvote.isUpvote FROM Upvote  WHERE Upvote.postId = %s AND Upvote.userId = %s ",(postId, userId))
         upload = mycursor.fetchone()
         connection.commit()
         connection.close()

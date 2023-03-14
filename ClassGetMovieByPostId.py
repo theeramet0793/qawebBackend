@@ -9,7 +9,7 @@ class GetMovieByPostId(Resource):
     #connect to database
     connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
     mycursor = connection.cursor()
-    mycursor.execute("SELECT posts.movieId, movies.movieName, movies.moviePoster FROM posts LEFT JOIN movies ON posts.movieId = movies.movieId WHERE postId = %s",postId)
+    mycursor.execute("SELECT Posts.movieId, Movies.movieName, Movies.moviePoster FROM Posts LEFT JOIN Movies ON Posts.movieId = Movies.movieId WHERE postId = %s",postId)
     movie = mycursor.fetchone()
     connection.commit()
     connection.close()

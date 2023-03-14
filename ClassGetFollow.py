@@ -9,7 +9,7 @@ class GetFollow(Resource):
         #connect to database
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("SELECT follow.postId, follow.userId, follow.isFollow FROM follow  WHERE follow.postId = %s AND follow.userId = %s ",(postId, userId))
+        mycursor.execute("SELECT Follow.postId, Follow.userId, Follow.isFollow FROM Follow  WHERE Follow.postId = %s AND Follow.userId = %s ",(postId, userId))
         follow = mycursor.fetchone()
         connection.commit()
         connection.close()

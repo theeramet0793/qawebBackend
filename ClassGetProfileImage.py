@@ -10,10 +10,10 @@ class GetProfileImage(Resource):
     def get(self,userId): 
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("SELECT profilepic.userId, profilepic.urlPath \
-          FROM profilepic \
-          WHERE profilepic.userId = %s \
-          ORDER BY profilepic.createdDate DESC, profilepic.createdTime DESC \
+        mycursor.execute("SELECT Profilepic.userId, Profilepic.urlPath \
+          FROM Profilepic \
+          WHERE Profilepic.userId = %s \
+          ORDER BY Profilepic.createdDate DESC, Profilepic.createdTime DESC \
           LIMIT 1;",(userId))
         post = mycursor.fetchall()
         connection.commit()

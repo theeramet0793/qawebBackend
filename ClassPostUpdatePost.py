@@ -30,13 +30,13 @@ class UpdatePost(Resource):
         old_diff_new = oldTagSet.difference(newTagSet)
         
         for tagId in intersec:
-            mycursor.execute("UPDATE poststags SET poststags.isDeleted = 0 WHERE poststags.postId = %s AND poststags.tagId = %s",(postId, tagId))
+            mycursor.execute("UPDATE Poststags SET Poststags.isDeleted = 0 WHERE Poststags.postId = %s AND Poststags.tagId = %s",(postId, tagId))
             connection.commit()
         for tagId in old_diff_new:
-            mycursor.execute("UPDATE poststags SET poststags.isDeleted = 1 WHERE poststags.postId = %s AND poststags.tagId = %s",(postId, tagId))
+            mycursor.execute("UPDATE Poststags SET Poststags.isDeleted = 1 WHERE Poststags.postId = %s AND Poststags.tagId = %s",(postId, tagId))
             connection.commit()
         for tagId in new_diff_old:
-            mycursor.execute("INSERT INTO poststags(postId, tagId) VALUES (%s, %s); ",(postId, tagId))
+            mycursor.execute("INSERT INTO Poststags(postId, tagId) VALUES (%s, %s); ",(postId, tagId))
             connection.commit()
         
         connection.close() 

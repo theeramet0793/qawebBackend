@@ -21,11 +21,11 @@ class GetMainSearch(Resource):
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
         
-        mycursor.execute("SELECT tags.tagId, tags.tagName FROM tags  WHERE tags.tagName LIKE %s LIMIT 3",searchStr)
+        mycursor.execute("SELECT Tags.tagId, Tags.tagName FROM Tags  WHERE Tags.tagName LIKE %s LIMIT 3",searchStr)
         tags = mycursor.fetchall()
         connection.commit()
         
-        mycursor.execute("SELECT users.userId, users.username FROM users  WHERE users.username LIKE %s LIMIT 2",searchStr)
+        mycursor.execute("SELECT Users.userId, Users.username FROM Users  WHERE Users.username LIKE %s LIMIT 2",searchStr)
         users = mycursor.fetchall()
         connection.commit()
         

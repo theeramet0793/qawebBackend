@@ -26,22 +26,22 @@ class GetAllPost(Resource):
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
         mycursor.execute("WITH cte_upvote(post_Id, upvote_count) AS (           \
-                                  SELECT upvote.postId, COUNT(upvote.userId)    \
-                                  FROM upvote                                   \
-                                  WHERE upvote.isUpvote = 1                     \
-                                  GROUP BY upvote.postId                        \
+                                  SELECT Upvote.postId, COUNT(Upvote.userId)    \
+                                  FROM Upvote                                   \
+                                  WHERE Upvote.isUpvote = 1                     \
+                                  GROUP BY Upvote.postId                        \
                             ), cte_follow(post_Id, follow_count) AS (           \
-                                  SELECT follow.postId, COUNT(follow.userId)    \
-                                  FROM follow                                   \
-                                  WHERE follow.isFollow = 1                     \
-                                  GROUP BY follow.postId                        \
+                                  SELECT Follow.postId, COUNT(Follow.userId)    \
+                                  FROM Follow                                   \
+                                  WHERE Follow.isFollow = 1                     \
+                                  GROUP BY Follow.postId                        \
                             )"+sql_create_new_cte+"                                                  \
-                          SELECT posts.*, cte_upvote.upvote_count as upvotes,  cte_follow.follow_count as follow\
-                          FROM posts \
-                          LEFT JOIN cte_upvote ON posts.postId = cte_upvote.post_Id\
-                          LEFT JOIN cte_follow ON posts.postId = cte_follow.post_Id\
+                          SELECT Posts.*, cte_upvote.upvote_count as upvotes,  cte_follow.follow_count as follow\
+                          FROM Posts \
+                          LEFT JOIN cte_upvote ON Posts.postId = cte_upvote.post_Id\
+                          LEFT JOIN cte_follow ON Posts.postId = cte_follow.post_Id\
                           "+sql_filter_only_follow_post+"  \
-                          WHERE posts.isDeleted = 0 \
+                          WHERE Posts.isDeleted = 0 \
                           "+sql_where+sql_order_by+" LIMIT "+currentAmount+","+fetchAmount,())
         posts = mycursor.fetchall()
         connection.commit()
@@ -69,19 +69,19 @@ def whereType(type):
   if(type == 'solved'):
     return "AND movieId IS NOT NULL "
   if(type == 'unsolved'):
-    return "AND movieID IS NULL "
+    return "AND movieId IS NULL "
   
 def create_new_cte(userId):
   if(userId != None and userId != ''):
     return(", cte_onlyfollow(post_Id) AS (\
-      SELECT follow.postId \
-      FROM follow \
-      WHERE follow.isFollow = 1 AND follow.userId ="+userId+" )")
+      SELECT Follow.postId \
+      FROM Follow \
+      WHERE Follow.isFollow = 1 AND Follow.userId ="+userId+" )")
   else:
     return('')
   
 def right_join_for_only_follow_post(userId):
     if(userId != None and userId != ''):
-      return("RIGHT JOIN cte_onlyfollow ON posts.postId = cte_onlyfollow.post_Id")
+      return("RIGHT JOIN cte_onlyfollow ON Posts.postId = cte_onlyfollow.post_Id")
     else:
       return('')

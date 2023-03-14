@@ -11,10 +11,10 @@ class GetCommentById(Resource):
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
         mycursor.execute("SELECT \
-            comments.commentId, comments.postId, comments.userId, comments.commentDetail, comments.createdDate, comments.createdTime,\
-            comments.lastUpdateDate, comments.lastUpdateTime, users.Username \
-            FROM comments LEFT JOIN Users ON comments.userId = Users.userId \
-            WHERE isDeleted = 0 AND comments.commentId = %s",(commentId))
+            Comments.commentId, Comments.postId, Comments.userId, Comments.commentDetail, Comments.createdDate, Comments.createdTime,\
+            Comments.lastUpdateDate, Comments.lastUpdateTime, Users.Username \
+            FROM Comments LEFT JOIN Users ON Comments.userId = Users.userId \
+            WHERE isDeleted = 0 AND Comments.commentId = %s",(commentId))
         post = mycursor.fetchall()
         connection.commit()
         connection.close()

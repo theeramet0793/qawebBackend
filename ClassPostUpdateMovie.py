@@ -28,18 +28,18 @@ class UpdateMovie(Resource):
         mycursor = connection.cursor()
         if(len(movieName) <= 0):
           # In case of delete movie from post
-          mycursor.execute("UPDATE posts SET posts.movieId = NULL, posts.isReccommend = 0, posts.lastUpdateDate = %s, posts.lastUpdateTime = %s\
-            WHERE posts.postId = %s",(date, time, postId))
+          mycursor.execute("UPDATE Posts SET Posts.movieId = NULL, Posts.isReccommend = 0, Posts.lastUpdateDate = %s, Posts.lastUpdateTime = %s\
+            WHERE Posts.postId = %s",(date, time, postId))
           connection.commit()
         elif(len(movieId) <=0 ):
           return Response("movieId is required", status=404, mimetype='application/json')
         else:
-            mycursor.execute("SELECT movies.movieName FROM movies WHERE movies.movieId = %s",(movieId))
+            mycursor.execute("SELECT Movies.movieName FROM Movies WHERE Movies.movieId = %s",(movieId))
             movienamefromDB = mycursor.fetchone()
             connection.commit()
             if(movienamefromDB == None):
               # In case of dont have this movie in DB => Insert new movie 
-              mycursor.execute("INSERT INTO movies(movieId, movieName, moviePoster, createdDate, createdTime, createdBy) VALUES(%s, %s, %s, %s, %s, %s)",(movieId, movieName, moviePoster, date, time, userId))
+              mycursor.execute("INSERT INTO Movies(movieId, movieName, moviePoster, createdDate, createdTime, createdBy) VALUES(%s, %s, %s, %s, %s, %s)",(movieId, movieName, moviePoster, date, time, userId))
               connection.commit()
               # add new movie to ML 
               body = {
@@ -49,7 +49,7 @@ class UpdateMovie(Resource):
               requests.post(api_url_for_add_movie_to_ML, json=body)
               
         # For noti
-        mycursor.execute("SELECT posts.movieId FROM posts WHERE posts.postId = %s",(postId))
+        mycursor.execute("SELECT Posts.movieId FROM Posts WHERE Posts.postId = %s",(postId))
         o = mycursor.fetchone()
         connection.commit()
         oldMovieId = None
@@ -60,7 +60,7 @@ class UpdateMovie(Resource):
         
         # Update post when user select movie name
         if(len(movieName) > 0):
-          mycursor.execute("UPDATE posts SET posts.movieId = %s, posts.isReccommend = 1, posts.lastUpdateDate = %s, posts.lastUpdateTime = %s\
+          mycursor.execute("UPDATE Posts SET Posts.movieId = %s, Posts.isReccommend = 1, Posts.lastUpdateDate = %s, Posts.lastUpdateTime = %s\
             WHERE posts.postId = %s",(movieId, date, time, postId))
           connection.commit()   
         
@@ -68,14 +68,14 @@ class UpdateMovie(Resource):
         updateDataToML(postId)
         
         # Create notification      
-        mycursor.execute("SELECT follow.userId FROM follow WHERE follow.isFollow = 1 AND follow.postId = %s ",(postId))
+        mycursor.execute("SELECT Follow.userId FROM Follow WHERE Follow.isFollow = 1 AND Follow.postId = %s ",(postId))
         follows = mycursor.fetchall()
         connection.commit()
         if(follows!=None):
           for follow in follows:
             followerId = follow[0]
             mycursor.execute("INSERT \
-              INTO notification(postId, receiverId, isRead, notiType, createdDate, createdTime) \
+              INTO Notification(postId, receiverId, isRead, notiType, createdDate, createdTime) \
               VALUES(%s,%s,%s,%s,%s,%s) ",(postId,followerId,0,notiType,date,time))
             connection.commit()
           

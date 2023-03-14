@@ -11,7 +11,7 @@ class UpdateProfileImage(Resource):
         if(data['urlPath'] != None):
           connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword, db=connectionDatabase)
           mycursor = connection.cursor()
-          mycursor.execute("INSERT INTO profilepic( userId, urlPath, createdDate, createdTime)\
+          mycursor.execute("INSERT INTO Profilepic( userId, urlPath, createdDate, createdTime)\
             VALUES( %s, %s, %s, %s) ",(data['userId'], data['urlPath'],data['date'], data['time']))
           connection.commit()
           connection.close() 

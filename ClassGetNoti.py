@@ -15,14 +15,14 @@ class GetNotification(Resource):
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
         mycursor.execute("\
-            SELECT  notification.notiId, notification.postId, notification.receiverId, \
-                    notification.isRead, notification.NotiType, notification.createdDate, notification.createdTime, \
-                    notification.readDate, notification.readTime, posts.postDetail, posts.userId, users.username \
-            FROM notification \
-            LEFT JOIN posts ON notification.postId = posts.postId \
-            LEFT JOIN users ON posts.userId = users.userId \
+            SELECT  Notification.notiId, Notification.postId, Notification.receiverId, \
+                    Notification.isRead, Notification.NotiType, Notification.createdDate, Notification.createdTime, \
+                    Notification.readDate, Notification.readTime, Posts.postDetail, Posts.userId, Users.username \
+            FROM Notification \
+            LEFT JOIN Posts ON Notification.postId = Posts.postId \
+            LEFT JOIN Users ON Posts.userId = Users.userId \
             WHERE receiverId = %s\
-            ORDER BY notification.createdDate DESC, notification.createdTime DESC;",userId)
+            ORDER BY Notification.createdDate DESC, Notification.createdTime DESC;",userId)
         selected_rows = mycursor.fetchall()
         connection.commit()
         connection.close()

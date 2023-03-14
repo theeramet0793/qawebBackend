@@ -11,7 +11,7 @@ class UpdateComment(Resource):
         print(data)
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword, db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("UPDATE comments \
+        mycursor.execute("UPDATE Comments \
             SET  commentDetail = %s,  lastUpdateDate = %s, lastUpdateTime = %s  \
             WHERE commentId = %s; ",(data['commentDetail'], data['date'],data['time'], data['commentId']))
         connection.commit()

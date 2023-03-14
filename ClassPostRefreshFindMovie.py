@@ -9,7 +9,7 @@ class RefreshFindingMovie(Resource):
         data = json.loads(request.data)
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("UPDATE Posts SET posts.isReccommend = 0 WHERE posts.postId = %s; ",( data['postId']))
+        mycursor.execute("UPDATE Posts SET Posts.isReccommend = 0 WHERE Posts.postId = %s; ",( data['postId']))
         connection.commit()
         connection.close()  
         return 'Recieved'

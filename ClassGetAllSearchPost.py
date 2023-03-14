@@ -25,14 +25,14 @@ class GetAllSearchPost(Resource):
           return Response("searchType is required", status=404, mimetype='application/json')
         else:
           if(searchType=="TAG"):
-            mycursor.execute("SELECT tags.tagId FROM tags WHERE tags.tagName = %s",(searchWord))
+            mycursor.execute("SELECT Tags.tagId FROM Tags WHERE Tags.tagName = %s",(searchWord))
             tag= mycursor.fetchone()
             connection.commit()
             if(tag!=None):
               tag_id = str(tag[0])
 
           elif(searchType =="USER"):
-            mycursor.execute("SELECT users.userId FROM users WHERE users.username = %s",(searchWord))
+            mycursor.execute("SELECT Users.userId FROM Users WHERE Users.username = %s",(searchWord))
             user = mycursor.fetchone()
             connection.commit()
             if(user!=None):
@@ -54,43 +54,43 @@ class GetAllSearchPost(Resource):
           
         if(searchType=="USER" or searchType=="TAG"):
           mycursor.execute("WITH cte_upvote(post_Id, upvote_count) AS (           \
-                                    SELECT upvote.postId, COUNT(upvote.userId)    \
-                                    FROM upvote                                   \
-                                    WHERE upvote.isUpvote = 1                     \
-                                    GROUP BY upvote.postId                        \
+                                    SELECT Upvote.postId, COUNT(Upvote.userId)    \
+                                    FROM Upvote                                   \
+                                    WHERE Upvote.isUpvote = 1                     \
+                                    GROUP BY Upvote.postId                        \
                               ), cte_follow(post_Id, follow_count) AS (           \
-                                    SELECT follow.postId, COUNT(follow.userId)    \
-                                    FROM follow                                   \
-                                    WHERE follow.isFollow = 1                     \
-                                    GROUP BY follow.postId                        \
+                                    SELECT Follow.postId, COUNT(Follow.userId)    \
+                                    FROM Follow                                   \
+                                    WHERE Follow.isFollow = 1                     \
+                                    GROUP BY Follow.postId                        \
                               )"+sql_create_only_follow_cte+sql_create_search_by_tag_cte+"                                                  \
-                            SELECT posts.*, cte_upvote.upvote_count as upvotes,  cte_follow.follow_count as follow\
-                            FROM posts \
-                            LEFT JOIN cte_upvote ON posts.postId = cte_upvote.post_Id\
-                            LEFT JOIN cte_follow ON posts.postId = cte_follow.post_Id\
+                            SELECT Posts.*, cte_upvote.upvote_count as upvotes,  cte_follow.follow_count as follow\
+                            FROM Posts \
+                            LEFT JOIN cte_upvote ON Posts.postId = cte_upvote.post_Id\
+                            LEFT JOIN cte_follow ON Posts.postId = cte_follow.post_Id\
                             "+sql_filter_only_follow_post+sql_filter_search_by_tag_cte+"  \
-                            WHERE posts.isDeleted = 0 "+sql_where_clause_for_search_by_userId+"\
+                            WHERE Posts.isDeleted = 0 "+sql_where_clause_for_search_by_userId+"\
                             "+sql_where+sql_order_by+" LIMIT "+currentAmount+","+fetchAmount,())
         elif(searchType=="POST"):
           keyword = '%'+searchWord+'%'
-          sql_filter_by_keyword = ("AND posts.postDetail LIKE ")
+          sql_filter_by_keyword = ("AND Posts.postDetail LIKE ")
           mycursor.execute("WITH cte_upvote(post_Id, upvote_count) AS (           \
-                                    SELECT upvote.postId, COUNT(upvote.userId)    \
-                                    FROM upvote                                   \
-                                    WHERE upvote.isUpvote = 1                     \
-                                    GROUP BY upvote.postId                        \
+                                    SELECT Upvote.postId, COUNT(Upvote.userId)    \
+                                    FROM Upvote                                   \
+                                    WHERE Upvote.isUpvote = 1                     \
+                                    GROUP BY Upvote.postId                        \
                               ), cte_follow(post_Id, follow_count) AS (           \
-                                    SELECT follow.postId, COUNT(follow.userId)    \
-                                    FROM follow                                   \
-                                    WHERE follow.isFollow = 1                     \
-                                    GROUP BY follow.postId                        \
+                                    SELECT Follow.postId, COUNT(Follow.userId)    \
+                                    FROM Follow                                   \
+                                    WHERE Follow.isFollow = 1                     \
+                                    GROUP BY Follow.postId                        \
                               )"+sql_create_only_follow_cte+"                                                  \
-                            SELECT posts.*, cte_upvote.upvote_count as upvotes,  cte_follow.follow_count as follow\
-                            FROM posts \
-                            LEFT JOIN cte_upvote ON posts.postId = cte_upvote.post_Id\
-                            LEFT JOIN cte_follow ON posts.postId = cte_follow.post_Id\
+                            SELECT Posts.*, cte_upvote.upvote_count as upvotes,  cte_follow.follow_count as follow\
+                            FROM Posts \
+                            LEFT JOIN cte_upvote ON Posts.postId = cte_upvote.post_Id\
+                            LEFT JOIN cte_follow ON Posts.postId = cte_follow.post_Id\
                             "+sql_filter_only_follow_post+"  \
-                            WHERE posts.isDeleted = 0 \
+                            WHERE Posts.isDeleted = 0 \
                             "+sql_where+sql_filter_by_keyword+"%s"+sql_order_by+" LIMIT "+currentAmount+","+fetchAmount,(keyword))
         posts = mycursor.fetchall()
         connection.commit()
@@ -118,20 +118,20 @@ def whereType(type):
   if(type == 'solved'):
     return " AND movieId IS NOT NULL "
   if(type == 'unsolved'):
-    return " AND movieID IS NULL "
+    return " AND movieId IS NULL "
   
 def create_only_follow_cte(userId):
   if(userId != None and userId != ''):
     return(", cte_onlyfollow(post_Id) AS (\
-      SELECT follow.postId \
-      FROM follow \
-      WHERE follow.isFollow = 1 AND follow.userId ="+userId+" )")
+      SELECT Follow.postId \
+      FROM Follow \
+      WHERE Follow.isFollow = 1 AND Follow.userId ="+userId+" )")
   else:
     return('')
   
 def right_join_for_only_follow_post(userId):
     if(userId != None and userId != ''):
-      return(" RIGHT JOIN cte_onlyfollow ON posts.postId = cte_onlyfollow.post_Id")
+      return(" RIGHT JOIN cte_onlyfollow ON Posts.postId = cte_onlyfollow.post_Id")
     else:
       return('')
 
@@ -139,28 +139,28 @@ def create_sql_for_poststags_cte(searchType,tagId):
   if(searchType=="TAG"):
     if(tagId != None and tagId != ''):
       return(", cte_tag(post_Id) AS ( \
-        SELECT poststags.postId \
-        FROM poststags \
-        WHERE poststags.tagId = "+tagId+" )" )
+        SELECT Poststags.postId \
+        FROM Poststags \
+        WHERE Poststags.tagId = "+tagId+" )" )
     else:
       return(", cte_tag(post_Id) AS ( \
-        SELECT poststags.postId \
-        FROM poststags \
-        WHERE poststags.tagId = -1 )" )
+        SELECT Poststags.postId \
+        FROM Poststags \
+        WHERE Poststags.tagId = -1 )" )
   else:
     return('')
 
 def right_join_for_search_by_tag(searchType,tagId):
     if( searchType=="TAG"):
-      return(" RIGHT JOIN cte_tag ON posts.postId = cte_tag.post_Id")
+      return(" RIGHT JOIN cte_tag ON Posts.postId = cte_tag.post_Id")
     else:
       return('')
 
 def where_for_search_by_userID(searchType,userId):
     if(searchType=="USER"):
       if(userId != None and userId != ''):
-        return(" AND posts.userId = "+userId)
+        return(" AND Posts.userId = "+userId)
       else:
-        return(" AND posts.userId = -1")
+        return(" AND Posts.userId = -1")
     else:
       return('')

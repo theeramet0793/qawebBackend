@@ -9,7 +9,7 @@ class GetCountUpvote(Resource):
         #connect to database
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()
-        mycursor.execute("SELECT upvote.postId, COUNT(upvote.postId) as countUpvote FROM upvote WHERE postId = %s AND isUpvote = 1",(postId))
+        mycursor.execute("SELECT Upvote.postId, COUNT(Upvote.postId) as countUpvote FROM Upvote WHERE postId = %s AND isUpvote = 1",(postId))
         post = mycursor.fetchall()
         connection.commit()
         connection.close()

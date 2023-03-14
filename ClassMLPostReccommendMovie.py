@@ -18,14 +18,14 @@ class UpdateReccommendMovie(Resource):
         mycursor = connection.cursor()
         for movie in movieList:
           mycursor.execute("\
-            INSERT INTO recmovie( postId, movieId, freq)\
+            INSERT INTO Recmovie( postId, movieId, freq)\
             VALUES (%s, %s, %s)",(postId, movie['tmdbId'], movie['freq']))
           connection.commit()
         
         mycursor.execute("\
-          UPDATE posts\
-          SET posts.isReccommend = 1\
-          WHERE posts.postId = %s",(postId))
+          UPDATE Posts\
+          SET Posts.isReccommend = 1\
+          WHERE Posts.postId = %s",(postId))
         connection.commit()
         connection.close()
         
