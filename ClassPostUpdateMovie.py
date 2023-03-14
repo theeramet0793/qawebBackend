@@ -61,7 +61,7 @@ class UpdateMovie(Resource):
         # Update post when user select movie name
         if(len(movieName) > 0):
           mycursor.execute("UPDATE Posts SET Posts.movieId = %s, Posts.isReccommend = 1, Posts.lastUpdateDate = %s, Posts.lastUpdateTime = %s\
-            WHERE posts.postId = %s",(movieId, date, time, postId))
+            WHERE Posts.postId = %s",(movieId, date, time, postId))
           connection.commit()   
         
         # Update post to ML
