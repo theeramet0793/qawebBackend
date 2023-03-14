@@ -3,6 +3,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
+import os
 
 # Class method GET
 from ClassTest import Test
@@ -104,5 +105,5 @@ api.add_resource(ChangeUsername,"/changeusername")
 
 if __name__ == "__main__":
     #app.run(debug=True, port=5000)
-    app.run(debug=True)
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
     #Change debug to flase when deploy
