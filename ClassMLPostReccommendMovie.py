@@ -53,7 +53,7 @@ class UpdateReccommendMovie(Resource):
             usable_movieList.remove(movie)
 
             
-        usable_movieList = usable_movieList[:3]
+        usable_movieList = usable_movieList[:5]
         #connect to database
         connection = pymysql.connect(host=connectionHost, user=connectionUser, password=connectionPassword,db=connectionDatabase)
         mycursor = connection.cursor()

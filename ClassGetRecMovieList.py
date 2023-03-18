@@ -20,7 +20,7 @@ class GetReccommendMovieForFrontend(Resource):
           LEFT JOIN Movies ON Recmovie.movieId = Movies.movieId  \
           WHERE Recmovie.postId = %s AND Recmovie.isReject = 0\
           ORDER BY Recmovie.freq DESC\
-          LIMIT 3",(postId))
+          LIMIT 5",(postId))
         movies = mycursor.fetchall()
         connection.commit()
         connection.close()
