@@ -15,7 +15,7 @@ class GetPostByMLSystem(Resource):
         mycursor.execute("\
             SELECT Posts.postId, Posts.userId, Posts.postDetail, Posts.createdDate, Posts.createdTime, Posts.lastUpdateDate, Posts.lastUpdateTime, Posts.movieId, Users.Username\
             FROM Posts LEFT JOIN Users ON Posts.userId = Users.userId  \
-            WHERE Posts.isReccommend = 0\
+            WHERE Posts.isDeleted != 1 AND Posts.isReccommend = 0\
             ORDER BY Posts.lastUpdateDate ASC, Posts.lastUpdateTime ASC\
             LIMIT 1",())
         post = mycursor.fetchone()

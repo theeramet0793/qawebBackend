@@ -105,5 +105,5 @@ api.add_resource(ChangeUsername,"/changeusername")
 
 if __name__ == "__main__":
     #app.run(debug=True, port=5000)
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run(debug=True, port=os.getenv("PORT", default=5555))
     #Change debug to flase when deploy

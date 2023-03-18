@@ -17,7 +17,7 @@ class UpdatePost(Resource):
             WHERE postId = %s; ",(data['postDetail'], data['date'],data['time'], postId))
         connection.commit()
         
-        mycursor.execute("SELECT poststags.tagId, poststags.isDeleted FROM poststags WHERE poststags.postId = %s",(postId))
+        mycursor.execute("SELECT Poststags.tagId, Poststags.isDeleted FROM Poststags WHERE Poststags.postId = %s",(postId))
         old_tags_list  = map(lambda x: x[0], list(mycursor.fetchall()))
         connection.commit()
         

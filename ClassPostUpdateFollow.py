@@ -16,7 +16,7 @@ class UpdateFollow(Resource):
           connection.commit()
           
           if( len(find_result) > 0):
-            mycursor.execute("UPDATE Follow SET isfollow= %s WHERE postId = %s AND userId = %s",(data['isFollow'], data['postId'], data['userId']))
+            mycursor.execute("UPDATE Follow SET isFollow= %s WHERE postId = %s AND userId = %s",(data['isFollow'], data['postId'], data['userId']))
             connection.commit()
           else:
             mycursor.execute("INSERT INTO Follow( postId, userId, isFollow) VALUES( %s, %s, %s) ",(data['postId'], data['userId'], data['isFollow']))
